@@ -134,7 +134,24 @@
 
 ## 🤝 Community & Support
 
-### **💬 Get Help & Connect**
+### **�‍💻 Project Creator & Maintainer**
+<div style="background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 8px; padding: 20px; margin: 20px 0;">
+  <div style="display: flex; align-items: center; gap: 15px;">
+    <div style="font-size: 2.5em;">🚀</div>
+    <div>
+      <h4 style="margin: 0 0 8px 0; color: #0369a1;">Bilgehan Nal</h4>
+      <p style="margin: 0; color: #0284c7;">Project Creator & Main Contributor</p>
+      <p style="margin: 8px 0 0 0;">
+        <a href="https://bilgehannal.com" style="color: #0369a1; font-weight: 500; text-decoration: none;">🌐 bilgehannal.com</a>
+      </p>
+    </div>
+  </div>
+  <p style="margin-top: 15px; margin-bottom: 0; color: #0369a1; font-style: italic;">
+    "SharedVolume was born from the need to simplify data sharing in Kubernetes environments. Thank you for being part of this journey!"
+  </p>
+</div>
+
+### **�💬 Get Help & Connect**
 | Resource | Description |
 |----------|-------------|
 | 🏠 **[Organization Page](https://github.com/sharedvolume)** | Github organization for SharedVolume |

@@ -104,32 +104,6 @@ kubectl edit sv my-volume
 kubectl get events --field-selector involvedObject.kind=SharedVolume
 ```
 
-## Webhook APIs
-
-*TODO: Webhook integration for external triggers.*
-
-### Sync Trigger Webhooks
-*TODO: API for triggering synchronization via webhooks.*
-
-### Status Webhooks
-*TODO: Webhook notifications for status changes.*
-
-## Metrics API
-
-*TODO: Prometheus metrics endpoint details.*
-
-### Available Metrics
-*TODO: List of all available Prometheus metrics.*
-
-### Metrics Endpoint
-```
-GET /metrics
-```
-
-## Status Codes and Error Handling
-
-*TODO: Standard HTTP status codes and error responses.*
-
 ### Common Status Codes
 - 200: Success
 - 201: Created
@@ -140,6 +114,3 @@ GET /metrics
 - 409: Conflict
 - 422: Unprocessable Entity
 - 500: Internal Server Error
-
-### Error Response Format
-*TODO: Standard error response format.*
