@@ -1,0 +1,11 @@
+{
+  "name": "sharedvolume-docs",
+  "private": true,
+  "devDependencies": {
+    "honkit": "^4.0.0"
+  },
+  "scripts": {
+    "serve": "honkit serve book --port 4000",
+    "build": "honkit build book _site"
+  }
+}

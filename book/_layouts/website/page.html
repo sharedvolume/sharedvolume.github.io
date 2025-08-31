@@ -1,0 +1,98 @@
+{% extends template.self %}
+
+{% block javascript %}
+{{ super() }}
+<script>
+/* Code Block Enhancements - Copy Button */
+
+(function() {
+    'use strict';
+
+    // Add copy button to all code blocks
+    function addCopyButtons() {
+        const codeBlocks = document.querySelectorAll('pre code');
+        
+        codeBlocks.forEach((codeBlock, index) => {
+            const pre = codeBlock.parentElement;
+            
+            // Skip if copy button already exists
+            if (pre.querySelector('.copy-btn')) return;
+            
+            // Create copy button
+            const copyBtn = document.createElement('button');
+            copyBtn.className = 'copy-btn';
+            copyBtn.textContent = 'Copy';
+            copyBtn.setAttribute('data-index', index);
+            
+            // Add click handler
+            copyBtn.addEventListener('click', function() {
+                const code = codeBlock.textContent;
+                
+                // Use modern clipboard API if available
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(code).then(() => {
+                        showCopyFeedback(copyBtn);
+                    }).catch(() => {
+                        fallbackCopy(code, copyBtn);
+                    });
+                } else {
+                    fallbackCopy(code, copyBtn);
+                }
+            });
+            
+            pre.appendChild(copyBtn);
+        });
+    }
+
+    // Fallback copy method for older browsers
+    function fallbackCopy(text, button) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            showCopyFeedback(button);
+        } catch (err) {
+            console.error('Failed to copy code', err);
+            button.textContent = 'Error';
+            setTimeout(() => {
+                button.textContent = 'Copy';
+            }, 2000);
+        }
+        
+        document.body.removeChild(textArea);
+    }
+
+    // Show copy feedback
+    function showCopyFeedback(button) {
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        button.style.background = 'rgba(16, 185, 129, 0.9)';
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = 'rgba(59, 130, 246, 0.9)';
+        }, 2000);
+    }
+
+    // Initialize when DOM is ready
+    function init() {
+        addCopyButtons();
+    }
+
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>
+{% endblock %}

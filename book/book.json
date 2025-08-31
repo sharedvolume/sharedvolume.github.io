@@ -1,0 +1,41 @@
+{
+  "title": "SharedVolume",
+  "description": "Modern Kubernetes storage sharing made simple",
+  "author": "SharedVolume Team",
+  "language": "en",
+  "gitbook": ">=3.0.0",
+  "structure": {
+    "readme": "README.md",
+    "summary": "SUMMARY.md"
+  },
+  "plugins": [
+    "-lunr",
+    "-search", 
+    "-sharing",
+    "-fontsettings",
+    "-copy-code-button",
+    "insert-logo",
+    "back-to-top-button",
+    "expandable-chapters-small"
+  ],
+  "pluginsConfig": {
+    "insert-logo": {
+      "url": "/images/logo-square.png",
+      "style": "background: none; max-height: 60px; min-height: 60px"
+    }
+  },
+  "styles": {
+    "website": "styles/website.css",
+    "ebook": "styles/website.css"
+  },
+  "variables": {
+    "themeColor": "#6366f1",
+    "primaryColor": "#4f46e5",
+    "accentColor": "#06b6d4"
+  },
+  "links": {
+    "sidebar": {
+      "GitHub": "https://github.com/sharedvolume/shared-volume"
+    }
+  }
+}
