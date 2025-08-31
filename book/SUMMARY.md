@@ -17,11 +17,8 @@
 
 ## User Guide
 * [Managing Volumes](user-guide/managing-shared-volumes.md)
-* [Namespace Scoping](user-guide/namespace-vs-cluster-scope.md)
+* [Nfs Server](user-guide/nfs-server.md)
 * [External Sources](user-guide/syncing-external-sources.md)
-* [NFS Backend](user-guide/external-nfs-backend.md)
-* [Monitoring](user-guide/monitoring-logs.md)
-* [Troubleshooting](user-guide/debugging-failed-syncs.md)
 
 ## Advanced
 * [Controllers](advanced/controllers-deep-dive.md)
