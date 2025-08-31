@@ -1,0 +1,31 @@
+# GitHub Pages Configuration
+# This file is used to configure how GitHub Pages builds and serves the site
+
+# Build settings
+source: _site
+destination: _site
+
+# Exclude files from being processed
+exclude:
+  - node_modules/
+  - package.json
+  - package-lock.json
+  - .gitignore
+  - README.md
+  - book/
+  - .github/
+
+# Include files that start with underscores
+include:
+  - _site
+  - .nojekyll
+
+# Plugins (disabled as we're using HonKit for processing)
+plugins: []
+
+# Markdown settings (not used as HonKit handles this)
+markdown: kramdown
+
+# Sass settings (not used as HonKit handles this)
+sass:
+  style: compressed

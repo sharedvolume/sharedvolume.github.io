@@ -1,0 +1,225 @@
+name: Build and Deploy Documentation (Static HTML - Backup)
+
+on:
+  workflow_dispatch:
+    inputs:
+      use_static:
+        description: 'Use static HTML as backup'
+        required: false
+        default: 'true'
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages-static"
+  cancel-in-progress: true
+
+jobs:
+  # Build job with static HTML
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Setup Python for markdown processing
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install markdown pygments
+
+      - name: Build static HTML
+        run: |
+          # Create output directory
+          mkdir -p _site
+          
+          # Copy static assets
+          cp -r book/images _site/ 2>/dev/null || true
+          cp -r book/styles _site/ 2>/dev/null || true
+          cp -r static/* _site/ 2>/dev/null || true
+          
+          # Create base HTML template
+          cat > template.html << 'EOF'
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>{{TITLE}} - SharedVolume Documentation</title>
+              <link rel="stylesheet" href="/styles/website.css">
+              <style>
+                  body { 
+                      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; 
+                      margin: 0; 
+                      padding: 0;
+                      line-height: 1.6;
+                      color: #1e293b;
+                  }
+                  .container { 
+                      max-width: 1200px; 
+                      margin: 0 auto; 
+                      padding: 20px;
+                  }
+                  .nav { 
+                      background: #f8fafc; 
+                      padding: 20px; 
+                      border-radius: 8px; 
+                      margin-bottom: 30px;
+                      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                  }
+                  .nav a { 
+                      color: #4f46e5; 
+                      text-decoration: none; 
+                      margin-right: 20px; 
+                      font-weight: 500; 
+                  }
+                  .nav a:hover { 
+                      text-decoration: underline; 
+                  }
+                  .content {
+                      background: white;
+                      padding: 30px;
+                      border-radius: 8px;
+                      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+                  }
+                  h1, h2, h3, h4 { color: #1e293b; }
+                  h1 { color: #6366f1 !important; }
+                  h2, h3 { color: #6366f1; }
+                  code { 
+                      background: #f1f5f9; 
+                      padding: 2px 6px; 
+                      border-radius: 4px; 
+                      font-family: 'Monaco', 'Menlo', monospace;
+                  }
+                  pre { 
+                      background: #f1f5f9; 
+                      padding: 16px; 
+                      border-radius: 8px; 
+                      overflow-x: auto;
+                  }
+                  blockquote {
+                      border-left: 4px solid #6366f1;
+                      margin: 20px 0;
+                      padding: 10px 20px;
+                      background: #f8fafc;
+                  }
+                  table {
+                      width: 100%;
+                      border-collapse: collapse;
+                      margin: 20px 0;
+                  }
+                  th, td {
+                      padding: 12px;
+                      text-align: left;
+                      border: 1px solid #e2e8f0;
+                  }
+                  th {
+                      background: #f8fafc;
+                      font-weight: 600;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <nav class="nav">
+                      <a href="/">🏠 Home</a>
+                      <a href="/getting-started/installation.html">🚀 Get Started</a>
+                      <a href="/reference/faq.html">❓ FAQ</a>
+                      <a href="https://github.com/sharedvolume/shared-volume">⭐ GitHub</a>
+                      <a href="https://bilgehannal.com">👨‍💻 Creator: Bilgehan Nal</a>
+                  </nav>
+                  <div class="content">
+                      {{CONTENT}}
+                  </div>
+              </div>
+          </body>
+          </html>
+          EOF
+          
+          # Python script to convert markdown to HTML
+          cat > convert_md.py << 'EOF'
+          import markdown
+          import os
+          import sys
+          import re
+          
+          def convert_file(input_file, output_file, title="SharedVolume"):
+              with open(input_file, 'r', encoding='utf-8') as f:
+                  content = f.read()
+              
+              # Convert markdown to HTML
+              md = markdown.Markdown(extensions=['codehilite', 'tables', 'toc'])
+              html_content = md.convert(content)
+              
+              # Read template
+              with open('template.html', 'r', encoding='utf-8') as f:
+                  template = f.read()
+              
+              # Replace placeholders
+              final_html = template.replace('{{TITLE}}', title)
+              final_html = final_html.replace('{{CONTENT}}', html_content)
+              
+              # Ensure output directory exists
+              os.makedirs(os.path.dirname(output_file), exist_ok=True)
+              
+              # Write output
+              with open(output_file, 'w', encoding='utf-8') as f:
+                  f.write(final_html)
+          
+          if __name__ == "__main__":
+              input_file = sys.argv[1]
+              output_file = sys.argv[2]
+              title = sys.argv[3] if len(sys.argv) > 3 else "SharedVolume"
+              convert_file(input_file, output_file, title)
+          EOF
+          
+          # Convert main README
+          python convert_md.py book/README.md _site/index.html "SharedVolume - Kubernetes Data Sharing Simplified"
+          
+          # Convert all other markdown files
+          find book -name "*.md" -not -name "README.md" | while read file; do
+              # Calculate relative path and output path
+              rel_path=$(echo "$file" | sed 's|book/||')
+              output_path="_site/${rel_path%.md}.html"
+              
+              # Extract title from file
+              title=$(head -n 10 "$file" | grep "^# " | head -n 1 | sed 's/^# //' || echo "SharedVolume Documentation")
+              
+              # Convert the file
+              python convert_md.py "$file" "$output_path" "$title"
+          done
+          
+          # Create .nojekyll file
+          touch _site/.nojekyll
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

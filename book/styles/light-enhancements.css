@@ -1,0 +1,210 @@
+/* Additional Light Theme Enhancements */
+
+/* Beautiful Gradients */
+.gradient-bg-1 {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 50%, #f1f5f9 100%) !important;
+}
+
+.gradient-bg-2 {
+  background: linear-gradient(135deg, #fef7ff 0%, #ffffff 50%, #f0f9ff 100%) !important;
+}
+
+.gradient-bg-3 {
+  background: linear-gradient(135deg, #f0fdf4 0%, #ffffff 50%, #fefce8 100%) !important;
+}
+
+/* Light Card Variants */
+.card-light {
+  background: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 8px 32px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Soft Shadows */
+.shadow-soft {
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04) !important;
+}
+
+.shadow-soft-lg {
+  box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06) !important;
+}
+
+/* Hover Effects */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* Text Gradients */
+.text-gradient-primary {
+  background: linear-gradient(135deg, #4f46e5, #06b6d4) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+.text-gradient-success {
+  background: linear-gradient(135deg, #10b981, #34d399) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+}
+
+/* Light Borders */
+.border-light {
+  border: 1px solid #f1f5f9 !important;
+}
+
+.border-lighter {
+  border: 1px solid #f8fafc !important;
+}
+
+/* Subtle Backgrounds */
+.bg-subtle-primary {
+  background: rgba(79, 70, 229, 0.02) !important;
+}
+
+.bg-subtle-secondary {
+  background: rgba(6, 182, 212, 0.02) !important;
+}
+
+.bg-subtle-success {
+  background: rgba(16, 185, 129, 0.02) !important;
+}
+
+/* Enhanced Code Blocks for Light Theme */
+.book-body .page-inner pre {
+  background: #f8fafc !important;
+  border: 2px solid #e2e8f0 !important;
+  color: #334155 !important;
+}
+
+.book-body .page-inner pre code {
+  color: #334155 !important;
+}
+
+/* Light Theme Navigation */
+.book-body .navigation {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%) !important;
+  border: 1px solid #e2e8f0 !important;
+}
+
+/* Light Theme Footer */
+.book-footer {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%) !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+/* Enhanced Buttons for Light Theme */
+.btn-light {
+  background: #ffffff !important;
+  color: #334155 !important;
+  border: 2px solid #e2e8f0 !important;
+  box-shadow: 0 2px 4px rgba(15, 23, 42, 0.04) !important;
+}
+
+.btn-light:hover {
+  background: #f8fafc !important;
+  border-color: #cbd5e1 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* Light Theme Search */
+.search-results {
+  background: rgba(255, 255, 255, 0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.1) !important;
+}
+
+/* Light Scrollbar */
+::-webkit-scrollbar {
+  width: 6px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: #f8fafc !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1 !important;
+  border-radius: 3px !important;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8 !important;
+}
+
+/* Light Theme Focus */
+*:focus {
+  outline: 2px solid rgba(79, 70, 229, 0.4) !important;
+  outline-offset: 2px !important;
+}
+
+/* Light Theme Selection */
+::selection {
+  background: rgba(79, 70, 229, 0.15) !important;
+  color: #1e293b !important;
+}
+
+/* Enhanced Typography for Light Theme */
+.book-body .page-inner h1,
+.book-body .page-inner h2,
+.book-body .page-inner h3,
+.book-body .page-inner h4,
+.book-body .page-inner h5,
+.book-body .page-inner h6 {
+  font-weight: 600 !important;
+  letter-spacing: -0.025em !important;
+}
+
+.book-body .page-inner p {
+  color: #475569 !important;
+  line-height: 1.7 !important;
+}
+
+/* Light Theme Lists */
+.book-body .page-inner ul li::marker,
+.book-body .page-inner ol li::marker {
+  color: #6366f1 !important;
+}
+
+/* Enhanced Tables for Light Theme */
+.book-body .page-inner table th {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%) !important;
+  color: #334155 !important;
+  border-bottom: 2px solid #e2e8f0 !important;
+}
+
+.book-body .page-inner table tr:nth-child(even) {
+  background: #fafbfc !important;
+}
+
+/* Light Theme Animations */
+@keyframes fadeInLight {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.book-body .page-inner > * {
+  animation: fadeInLight 0.5s ease-out !important;
+}
+
+/* Responsive Enhancements for Light Theme */
+@media (max-width: 768px) {
+  .book-summary {
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(10px) !important;
+  }
+}

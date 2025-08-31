@@ -1,0 +1,21 @@
+{
+  "name": "sharedvolume-docs",
+  "version": "1.0.0",
+  "private": true,
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "devDependencies": {
+    "honkit": "3.6.20",
+    "gitbook-plugin-insert-logo": "^0.1.5",
+    "gitbook-plugin-back-to-top-button": "^0.1.4",
+    "gitbook-plugin-expandable-chapters-small": "^0.1.7"
+  },
+  "scripts": {
+    "serve": "honkit serve book --port 4000",
+    "build": "honkit build book _site",
+    "clean": "rm -rf _site node_modules/.cache",
+    "install:clean": "rm -rf node_modules package-lock.json && npm install",
+    "dev": "npm run serve"
+  }
+}

@@ -1,0 +1,141 @@
+name: Build and Deploy Documentation (MDBook)
+
+on:
+  workflow_dispatch:
+    inputs:
+      use_mdbook:
+        description: 'Use MDBook for building'
+        required: false
+        default: 'true'
+
+# Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Allow one concurrent deployment
+concurrency:
+  group: "pages-mdbook"
+  cancel-in-progress: true
+
+jobs:
+  # Build job with MDBook
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+
+      - name: Setup Rust and MDBook
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+          source ~/.cargo/env
+          cargo install mdbook mdbook-linkcheck
+
+      - name: Convert GitBook to MDBook format
+        run: |
+          # Create MDBook structure
+          mkdir -p mdbook-src
+          
+          # Create book.toml configuration
+          cat > book.toml << 'EOF'
+          [book]
+          authors = ["Bilgehan Nal"]
+          language = "en"
+          multilingual = false
+          src = "mdbook-src"
+          title = "SharedVolume Documentation"
+          description = "Modern Kubernetes storage sharing made simple"
+          
+          [output.html]
+          additional-css = ["book/styles/website.css"]
+          git-repository-url = "https://github.com/sharedvolume/shared-volume"
+          edit-url-template = "https://github.com/sharedvolume/sharedvolume.github.io/edit/main/book/{path}"
+          
+          [output.html.playpen]
+          runnable = false
+          EOF
+          
+          # Copy content
+          cp book/README.md mdbook-src/
+          cp -r book/images mdbook-src/ 2>/dev/null || true
+          
+          # Convert SUMMARY.md to MDBook format
+          if [ -f "book/SUMMARY.md" ]; then
+            cp book/SUMMARY.md mdbook-src/SUMMARY.md
+          else
+            # Create a basic summary if it doesn't exist
+            cat > mdbook-src/SUMMARY.md << 'EOF'
+          # Summary
+          
+          [Introduction](README.md)
+          
+          # Getting Started
+          - [Installation](getting-started/installation.md)
+          - [Quick Start](getting-started/quick-start.md)
+          
+          # Overview
+          - [What is SharedVolume?](overview/what-is-shared-volume.md)
+          - [Architecture](overview/architecture.md)
+          - [Features](overview/features.md)
+          - [Use Cases](overview/use-cases.md)
+          
+          # User Guide
+          - [Managing Shared Volumes](user-guide/managing-shared-volumes.md)
+          - [External NFS Backend](user-guide/external-nfs-backend.md)
+          - [Syncing External Sources](user-guide/syncing-external-sources.md)
+          
+          # Reference
+          - [FAQ](reference/faq.md)
+          - [API Details](reference/api-details.md)
+          - [CRD Specs](reference/crd-specs.md)
+          
+          # Contributing
+          - [How to Contribute](contributing/how-to-contribute.md)
+          - [Local Development](contributing/local-development.md)
+          EOF
+          fi
+          
+          # Copy all markdown files preserving structure
+          find book -name "*.md" -not -name "README.md" | while read file; do
+            target="mdbook-src/$(echo $file | sed 's|book/||')"
+            mkdir -p "$(dirname "$target")"
+            cp "$file" "$target"
+          done
+
+      - name: Build with MDBook
+        run: |
+          source ~/.cargo/env
+          mdbook build
+          
+          # Create .nojekyll file
+          touch book/.nojekyll
+          
+          # Copy any additional assets
+          if [ -d "static" ]; then
+            cp -r static/* book/
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: book
+
+  # Deployment job
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
