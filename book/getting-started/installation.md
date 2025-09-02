@@ -200,14 +200,6 @@ kubectl get clusterrole shared-volume-controller
 ```
 **Solution**: Verify RBAC resources are created correctly.
 
-### Getting Help
-
-If you encounter issues:
-
-1. Check the [Troubleshooting Guide](../support/troubleshooting.md)
-2. Review controller logs: `kubectl logs -n shared-volume-controller-system deployment/shared-volume-controller`
-3. Join our [Community](../support/community.md) for support
-
 ## References
 
 - **Helm Chart Repository**: [sharedvolume/shared-volume-helm](https://github.com/sharedvolume/shared-volume-helm)

@@ -156,7 +156,6 @@
 |----------|-------------|
 | 🏠 **[Organization Page](https://github.com/sharedvolume)** | Github organization for SharedVolume |
 | 🐛 **[Issue Tracker](https://github.com/sharedvolume/shared-volume/issues)** | Report bugs, request features, get support |
-| 📚 **[Troubleshooting](support/troubleshooting.md)** | Common issues and solutions |
 
 ### **🚀 Stay Updated**
 | Resource | Description |
