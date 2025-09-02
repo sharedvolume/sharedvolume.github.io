@@ -1,4 +1,10 @@
-# Installation
+# In## Prerequisites
+
+Before installing SharedVolume, ensure you have:
+
+- Kubernetes cluster (version 1.20 or later)
+- `kubectl` configured to access your cluster
+- Helm 3.x (for Helm installation method)ion
 
 Get Shared Volume up and running in your Kubernetes cluster quickly and easily.
 
@@ -176,9 +182,10 @@ If all pods are running and CRDs are installed, the installation was successful!
 ### Common Issues
 
 **Problem**: Pods stuck in `Pending` state
-```bash
-kubectl describe pod -n shared-volume-system <pod-name>
-```
+1. **Check Pod Status**: Verify the controller is running properly
+   ```bash
+   kubectl describe pod -n shared-volume-controller-system <pod-name>
+   ```
 **Solution**: Check resource constraints and node availability.
 
 **Problem**: CRDs not found
@@ -198,7 +205,7 @@ kubectl get clusterrole shared-volume-controller
 If you encounter issues:
 
 1. Check the [Troubleshooting Guide](../support/troubleshooting.md)
-2. Review controller logs: `kubectl logs -n shared-volume-system deployment/shared-volume-controller`
+2. Review controller logs: `kubectl logs -n shared-volume-controller-system deployment/shared-volume-controller`
 3. Join our [Community](../support/community.md) for support
 
 ## References

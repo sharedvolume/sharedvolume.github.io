@@ -2,32 +2,18 @@
 
 Understanding the SharedVolume architecture helps you make informed decisions about deployment and usage patterns. The system provides a comprehensive solution for shared storage with automatic synchronization from external sources.
 
-## High-Level Architecture
+## Architecture Overview
 
-The SharedVolume system consists of several interconnected components that work together to provide seamless shared storage with data synchronization capabilities.
+The SharedVolume system follows a distributed architecture pattern with multiple components working together to provide seamless shared storage with data synchronization capabilities.
 
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    Kubernetes Cluster                          │
-├─────────────────────────────────────────────────────────────────┤
-│  ┌─────────────────┐    ┌──────────────────┐    ┌─────────────┐ │
-│  │   User Pods     │───▶│   Webhook        │    │   External  │ │
-│  │ (with annot.)   │    │   (Mount logic)  │    │   Sources   │ │
-│  └─────────────────┘    └──────────────────┘    │             │ │
-│           │                       │              │ • Git Repos │ │
-│           ▼                       ▼              │ • S3 Storage│ │
-│  ┌─────────────────┐    ┌──────────────────┐    │ • SSH/SFTP  │ │
-│  │   PVC + PV      │    │ Shared Volume    │    │ • HTTP/HTTPS│ │
-│  │  (NFS Mount)    │    │   Controller     │    └─────────────┘ │
-│  └─────────────────┘    └──────────────────┘           │        │
-│           │                       │                    │        │
-│           ▼                       ▼                    ▼        │
-│  ┌─────────────────┐    ┌──────────────────┐    ┌─────────────┐ │
-│  │   NFS Server    │◀───│  Volume Syncer   │◀───│    Sync     │ │
-│  │  (Data Storage) │    │ (Data Sync Job)  │    │   Process   │ │
-│  └─────────────────┘    └──────────────────┘    └─────────────┘ │
-└─────────────────────────────────────────────────────────────────┘
-```
+![Detailed Architecture](../images/arch.png)
+
+The detailed architecture diagram illustrates the complete system with all components, data flows, and integration points:
+
+- **Multi-namespace Support**: Shows both SharedVolume (namespace-scoped) and ClusterSharedVolume (cluster-scoped) deployments
+- **Resource Management**: PVC/PV creation and lifecycle management
+- **Sync Operations**: Data flow from external sources through the syncer to NFS storage
+- **Pod Integration**: How user pods connect to shared volumes through the webhook system
 
 ## Core Components
 
@@ -99,10 +85,10 @@ The **Admission Webhook** automatically handles volume mounting for pods with ap
 2. Shared Volume Controller detects new resource
         ↓
 3. Controller creates NFS Server in CONTROLLER namespace
-   (shared-volume-controller)
+   (shared-volume-controller-system)
         ↓
 4. When NFS Server is ready, Controller creates:
-   • Volume Syncer ReplicaSet (in ns: shared-volume-controller)
+   • Volume Syncer ReplicaSet (in ns: shared-volume-controller-system)
    • PVC connected to NFS Server
    • PV for the shared storage
         ↓

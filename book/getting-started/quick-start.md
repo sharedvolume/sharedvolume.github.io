@@ -22,14 +22,12 @@ spec:
   syncInterval: "1m"
   syncTimeout: "30s"
   mountPath: "/opt/mnt"
-  # nfsServer: placeholder_nfs_host (This should be the NFS server address when using external NFS)
   storage:
     capacity: "1Gi"
-    # accessMode: ReadWrite # Default is ReadOnly
   source:
     source:
       type: git
-      url: "https://github.com/example/demo-data.git" # Change here
+      url: https://github.com/sharedvolume/volume-syncer.git
 ```
 
 Apply the resource:
@@ -46,14 +44,14 @@ Check the ClusterSharedVolume status:
 # Check the volume status
 kubectl get csv my-csv -o yaml
 
-# Monitor pods created for this CSV in shared-volume-controller namespace
-kubectl get pods -n shared-volume-controller | grep my-csv
+# Monitor pods created for this CSV in shared-volume-controller-system namespace
+kubectl get pods -n shared-volume-controller-system | grep my-csv
 
 # Watch NFS server pod logs
-kubectl logs -n shared-volume-controller -l app=nfs-server,csv=my-csv -f
+kubectl logs -n shared-volume-controller-system -l app=nfs-server,csv=my-csv -f
 
 # Watch volume-syncer pod logs
-kubectl logs -n shared-volume-controller -l app=volume-syncer,csv=my-csv -f
+kubectl logs -n shared-volume-controller-system -l app=volume-syncer,csv=my-csv -f
 ```
 
 ## Step 3: Mount the Volume in a Pod
